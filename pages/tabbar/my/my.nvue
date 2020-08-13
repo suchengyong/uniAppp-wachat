@@ -1,0 +1,63 @@
+<template>
+	<view class="page">
+		<nav-bar bgColor="bg-white">
+			<icon-button slot="right" @click="onClick"><view class="mr-2"><text class="iconfont font-lg">&#xe6ed;</text></view></icon-button>
+		</nav-bar>
+		
+		<list-item cover="../../../static/images/demo/demo6.jpg" coverSize="120" title="楚绵" showRight>
+			<view class="flex flex-column">
+				<text class="text-dark font-lg font-weight-bold">楚绵</text>
+				<text class="text-light-muted font mt-2">仿微信号：summer</text>
+			</view>
+			<view slot="right">
+				<text class="iconfont font-md text-light-muted">&#xe614;</text>
+			</view>
+		</list-item>
+		<divider></divider>
+		<list-item title="支付" showRight>
+			<text slot="icon" class="iconfont font-lg py-1">&#xe66c;</text>
+		</list-item>
+		<divider></divider>
+		<list-item title="收藏" showRight>
+			<text slot="icon" class="iconfont font-lg py-1">&#xea2d;</text>
+		</list-item>
+		<list-item title="相册" showRight>
+			<text slot="icon" class="iconfont font-lg py-1">&#xe608;</text>
+		</list-item>
+		<list-item title="表情" showRight>
+			<text slot="icon" class="iconfont font-lg py-1">&#xe605;</text>
+		</list-item>
+		<divider></divider>
+		<list-item title="设置" showRight>
+			<text slot="icon" class="iconfont font-lg py-1">&#xe612;</text>
+		</list-item>
+		
+	</view>
+</template>
+
+<script>
+	import navBar from "@/components/navBar.vue"
+	import listItem from "@/components/listItem.vue"
+	import divider from "@/components/divider.vue"
+	export default {
+		components: {
+			navBar,
+			listItem,
+			divider
+		},
+		data() {
+			return {
+				
+			}
+		},
+		methods: {
+			onClick() {
+				console.log('点击相机')
+			}
+		}
+	}
+</script>
+
+<style>
+
+</style>

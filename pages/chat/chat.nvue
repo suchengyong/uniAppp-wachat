@@ -1,0 +1,171 @@
+<template>
+	<view>
+		<!-- 导航栏 -->
+		<nav-bar title="帝莎编程学院" :noreadnum="1" showBack='true'>
+			<icon-button slot="right"><text class="iconfont font-md">&#xe6fd;</text></icon-button>
+		</nav-bar>
+		
+		<!-- 聊天内容区域 -->
+		<chart-list ref="chart" @withdraw="withdraw" @delect="delect" :list-data="ListData" :chartBodyBottom="chartBodyBottom"></chart-list>
+		
+		<div class="position-fixed left-0 top-0 right-0 bottom-0" @click="clickPage" v-show="mode=='action'"></div>
+		
+		<!-- 底部输入框 -->
+		<view class="position-fixed left-0 right-0 border-top flex align-center" style="background-color: #F7F7F6;height: 105rpx;" :style="'bottom:'+keyboardHeight+'px'">
+			<icon-button  @click="audioClick"><text class="iconfont font-md">&#xe606;</text></icon-button>
+			<view class="flex-1">
+				<textarea fixed style="height: 75rpx;" @focus="mode = 'text'" :adjust-position="false" v-model="textAreaValue" class="border border-pray bg-white p-2 font-md" @confirm="confirm"></textarea>
+			</view>
+			<icon-button><text class="iconfont font-md"  @click="emoticonsClick">&#xe605;</text></icon-button>
+			<icon-button><text class="iconfont font-md" @click="actionMenClick">&#xe603;</text></icon-button>
+		</view>
+		
+		<!-- 可扩展菜单弹出层 -->
+		<popup ref="action" :mask="false" @cancelBack="cancelBack" :fixBottom="true" transformOrigin="center center">
+			<view style="height: 580rpx;" class="border-top border-pray bg-light">
+				<swiper :indicator-dots="true" :duration="1000" style="height: 510rpx;">
+					<swiper-item class="row">
+						<view class="col-3 flex flex-column align-center justify-center" style="height: 250rpx;" v-for="(item,index) in actionList" :key="index" @click="actionEvent(item.event)">
+							<image :src="item.icon" mode="widthFix" style="width: 100rpx;height:100rpx;"></image>
+							<text class="font text-light-muted">{{item.name}}</text>
+						</view>
+					</swiper-item>
+					<swiper-item class="row">
+						<view class="col-3 flex flex-column align-center justify-center" style="height: 250rpx;" v-for="(item,index) in actionList" :key="index">
+							<image :src="item.icon" mode="widthFix" style="width: 100rpx;height:100rpx;"></image>
+							<text class="font text-light-muted">{{item.name}}</text>
+						</view>
+					</swiper-item>
+				</swiper>
+			</view>
+		</popup>
+	</view>
+</template>
+
+<script>
+	import navBar from "@/components/navBar.vue"
+	import iconButton from "@/components/iconButton.vue"
+	import chartList from "@/components/chatList.vue"
+	import popup from "@/components/popup.vue";
+	import {actionList,ListData,emoticons} from "@/common/data.js";
+	
+	export default {
+		components: {
+			navBar,
+			chartList,
+			iconButton,
+			popup
+		},
+		data() {
+			return {
+				mode:"text",// 模式： text：文字模式 emoticon：表情 action：操作菜单 audio：音频
+				navBarHeight: 0,
+				keyboardHeight:0,
+				textAreaValue:'',
+				actionList:actionList,
+				ListData:ListData
+			}
+		},
+		computed:{
+			chartBodyBottom() {
+				return `bottom:${uni.upx2px(105) + this.keyboardHeight}px;top:${this.navBarHeight}px`;
+			}
+		},
+		watch:{
+			mode(newVal,oldVal) {
+				console.log(newVal)
+				if(newVal !== 'action') {
+					this.$refs.action.hide()
+				}
+				if(newVal !=='text') {
+					uni.hideKeyboard();
+					
+				}
+			}
+		},
+		mounted() {
+			// #ifdef APP-PLUS-NVUE
+			var statusBarHeight = plus.navigator.getStatusbarHeight()
+			// #endif
+			this.navBarHeight = statusBarHeight + uni.upx2px(90)
+			// 监听键盘高度变化
+			uni.onKeyboardHeightChange((res)=>{
+				this.$nextTick(()=>{
+					if(this.mode !== 'action'){
+						this.keyboardHeight = res.height>0?res.height-30:res.height;
+					}
+				})
+				
+			})
+		},
+		methods:{
+			confirm(event) {
+				if(event.detail.value) {
+					this.ListData.push({
+						avatar:'/static/images/demo/demo5.jpg',
+						user_id:1,
+						create_time:new Date().getTime(),
+						type:'text',// image video,audio
+						data:event.detail.value,
+						nickname:'simull',
+						iswithdraw:false,
+						isdelect:false
+					})
+				}
+				this.textAreaValue = "";
+			},
+			withdraw(index) {
+				this.ListData[index].iswithdraw = true;
+			},
+			delect(index) {
+				this.ListData[index].isdelect = true;
+			},
+			clickPage() {
+				this.mode = '';
+				this.keyboardHeight = 0;
+			},
+			audioClick() {
+				
+			},
+			actionMenClick() {
+				this.actionList = actionList;
+				this.mode = 'action';
+				this.$refs.action.show();
+				uni.hideKeyboard();
+				this.keyboardHeight = uni.upx2px(580)
+			},
+			emoticonsClick() {
+				this.actionList = emoticons;
+				this.mode = 'action';
+				this.$refs.action.show();
+				uni.hideKeyboard();
+				this.keyboardHeight = uni.upx2px(580)
+			},
+			actionEvent(event) {
+				switch (event) {
+					case "copy":
+						break;
+					case "seed": 
+						break;
+					case "favorites":
+						break;
+					case "checkbox": 
+						break;
+					case "translation":
+						break;
+					case "delect": 
+						this.$emit('delect',this.propIndex)
+						break;
+					case "withdraw":
+						this.$emit('withdraw',this.propIndex)
+						break;
+				}
+			},
+			
+		}
+	}
+</script>
+
+<style>
+
+</style>
