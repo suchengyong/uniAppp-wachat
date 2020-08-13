@@ -73,7 +73,6 @@
 		},
 		watch:{
 			mode(newVal,oldVal) {
-				console.log(newVal)
 				if(newVal !== 'action') {
 					this.$refs.action.hide()
 				}
@@ -101,16 +100,7 @@
 		methods:{
 			confirm(event) {
 				if(event.detail.value) {
-					this.ListData.push({
-						avatar:'/static/images/demo/demo5.jpg',
-						user_id:1,
-						create_time:new Date().getTime(),
-						type:'text',// image video,audio
-						data:event.detail.value,
-						nickname:'simull',
-						iswithdraw:false,
-						isdelect:false
-					})
+					this.send('text',event.detail.value);
 				}
 				this.textAreaValue = "";
 			},
@@ -125,7 +115,8 @@
 				this.keyboardHeight = 0;
 			},
 			audioClick() {
-				
+				this.mode = '';
+				this.keyboardHeight = 0;
 			},
 			actionMenClick() {
 				this.actionList = actionList;
@@ -141,23 +132,33 @@
 				uni.hideKeyboard();
 				this.keyboardHeight = uni.upx2px(580)
 			},
+			send(type,data) {
+				this.ListData.push({
+					avatar:'/static/images/demo/demo5.jpg',
+					user_id:1,
+					create_time:new Date().getTime(),
+					type:type,// image video,audio
+					data:data,
+					nickname:'simull',
+					iswithdraw:false,
+					isdelect:false
+				})
+			},
 			actionEvent(event) {
 				switch (event) {
-					case "copy":
+					case "pic":
+						uni.chooseImage({
+						    count: 1, //默认9
+						    sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
+						    sourceType: ['album'], //从相册选择
+						    success: (res)=> {
+								this.send('image',res.tempFilePaths[0])
+						    }
+						});
 						break;
-					case "seed": 
+					case "video": 
 						break;
-					case "favorites":
-						break;
-					case "checkbox": 
-						break;
-					case "translation":
-						break;
-					case "delect": 
-						this.$emit('delect',this.propIndex)
-						break;
-					case "withdraw":
-						this.$emit('withdraw',this.propIndex)
+					case "audio":
 						break;
 				}
 			},

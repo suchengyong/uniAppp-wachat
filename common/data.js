@@ -1,6 +1,11 @@
 // 动作菜单数据
 let actionList=[
 	{
+		name:'相册',
+		icon:'../../static/images/extends/pic.png',
+		event:'pic'
+	},
+	{
 		name:'音频',
 		icon:'../../static/images/extends/audio.png',
 		event:'audio'
@@ -12,10 +17,6 @@ let actionList=[
 		name:'红包',
 		icon:'../../static/images/extends/hongbao.png',
 		event:'hongbao'
-	},{
-		name:'相册',
-		icon:'../../static/images/extends/pic.png',
-		event:'pic'
 	},{
 		name:'位置',
 		icon:'../../static/images/extends/path.png',
@@ -36,7 +37,7 @@ let ListData=[
 		avatar:'/static/images/demo/demo6.jpg',
 		user_id:2,
 		create_time:1597143683,
-		type:'text',// image video,audio
+		type:'text',// image video,audio emoticon
 		data:'你好，预控中心告诉你，你很棒的哦',
 		nickname:'simull',
 		iswithdraw:false,
@@ -63,8 +64,8 @@ let ListData=[
 		avatar:'/static/images/demo/demo5.jpg',
 		user_id:1,
 		create_time:1597143648,
-		type:'text',// image video,audio
-		data:'你好，预控中心告诉你，你很棒的哦',
+		type:'image',// image video,audio
+		data:'/static/images/demo/cate_01.png',
 		nickname:'simull',
 		iswithdraw:false,
 		isdelect:false

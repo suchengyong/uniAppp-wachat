@@ -103,7 +103,7 @@
 						duration: 100, //ms
 						timingFunction: 'ease',
 					}, function() {
-						console.log('动画执行结束');
+						//console.log('动画执行结束');
 					})
 				})
 				// #endif
@@ -121,7 +121,7 @@
 						timingFunction: 'ease',
 					}, () => {
 						this.status = false
-						console.log('动画执行结束');
+						//console.log('动画执行结束');
 					})
 				})
 				// #endif

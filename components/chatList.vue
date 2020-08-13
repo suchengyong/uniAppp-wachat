@@ -20,10 +20,13 @@
 			</view>
 			<!-- 本人 -->
 			<view  ref="chatItem" class="flex align-start justify-end position-relative mb-3" v-if="item.user_id == 1 && !item.iswithdraw && !item.isdelect">
-				<div style="max-width:500rpx;" class="bg-chat-item p-2 rounded mr-3">
-					<text class="font-md">{{item.data}}</text>
+				<div style="max-width:500rpx;" class="p-2 rounded mr-3" :class="{'bg-chat-item':item.type=='text'}">
+					<!-- 发送文字 -->
+					<text v-if="item.type=='text'" class="font-md">{{item.data}}</text>
+					<!-- 发送图片和表情 -->
+					<image :lazy-load="true" style="width: 300rpx; height: 300rpx;" v-if="item.type==='image'|| item.type==='emoticon'" :src="item.data" mode="widthFix"></image>
 				</div>
-				<text class="iconfont text-chat-icon-item font-md position-absolute chat-right-icon">&#xe640;</text>
+				<text class="iconfont text-chat-icon-item font-md position-absolute chat-right-icon" v-if="item.type=='text'">&#xe640;</text>
 				<avater size="70" :src="item.avatar"></avater>
 			</view>
 		</div>
